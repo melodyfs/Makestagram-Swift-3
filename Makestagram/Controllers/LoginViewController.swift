@@ -28,14 +28,11 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginButtonTapped(_ sender: Any) {
-        // 1
         guard let authUI = FUIAuth.defaultAuthUI()
             else { return }
         
-        // 2
         authUI.delegate = self as FUIAuthDelegate
         
-        // 3
         let authViewController = authUI.authViewController()
         present(authViewController, animated: true)
     }
@@ -45,60 +42,16 @@ class LoginViewController: UIViewController {
 
 extension LoginViewController: FUIAuthDelegate {
     func authUI(_ authUI: FUIAuth, didSignInWith user: FIRUser?, error: Error?) {
-        if let error = error {
-            assertionFailure("Error signing in: \(error.localizedDescription)")
-            return
-        }
-        
+     
         guard let user: FIRUser = user
             else { return }
         
-        //retrieve data from user snapshot
-        let userRef = Database.database().reference().child("users").child(user.uid)
-        
-        userRef.observeSingleEvent(of: .value, with: { (snapshot) in
-        
-            if let user = User(snapshot: snapshot) {
-                print("Welcome back, \(user.username).")
-            } else {
-               self.performSegue(withIdentifier: Constants.Segue.toCreateUsername, sender: self)
-            }
-            
-            
-            
-        })
-        
-        //Let user into the main storyboard
-        userRef.observeSingleEvent(of: .value, with: { [unowned self] (snapshot) in
-            if let _ = User(snapshot: snapshot) {
-                
-                let initialViewController = UIStoryboard.initialViewController(for: .main)
-                self.view.window?.rootViewController = initialViewController
-                self.view.window?.makeKeyAndVisible()
-
-            } else {
-                self.performSegue(withIdentifier: Constants.Segue.toCreateUsername, sender: self)
-            }
-        })
-        
-//        Setting for current user
-//        userRef.observeSingleEvent(of: .value, with: { [unowned self] (snapshot) in
-//            if let user = User(snapshot: snapshot) {
-//                User.setCurrent(user)
-//                
-//                let initialViewController = UIStoryboard.initialViewController(for: .main)
-//                    self.view.window?.rootViewController = initialViewController
-//                    self.view.window?.makeKeyAndVisible()
-//            } else {
-//                self.performSegue(withIdentifier: "toCreateUsername", sender: self)
-//            }
-//        })
         
         UserService.show(forUID: user.uid) { (user) in
             if let user = user {
                 // handle existing user
-                User.setCurrent(user)
-                
+                User.setCurrent(user, writeToUserDefaults: true)
+
                 let initialViewController = UIStoryboard.initialViewController(for: .main)
                 self.view.window?.rootViewController = initialViewController
                 self.view.window?.makeKeyAndVisible()
