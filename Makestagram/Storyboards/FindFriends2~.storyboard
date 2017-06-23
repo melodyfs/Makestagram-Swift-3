@@ -28,6 +28,26 @@
             </objects>
             <point key="canvasLocation" x="433" y="95"/>
         </scene>
+        <!--Find Friends View Controller-->
+        <scene sceneID="sgU-Sw-JBb">
+            <objects>
+                <viewController id="8ig-69-IOl" customClass="FindFriendsViewController" customModule="Makestagram" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gbf-TB-8SX"/>
+                        <viewControllerLayoutGuide type="bottom" id="Z9C-7S-dG5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ksu-yh-kcH">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="n38-de-XNd"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d5n-2X-gRU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1372" y="1036.7316341829087"/>
+        </scene>
         <!--Main Tab Bar Controller-->
         <scene sceneID="DJZ-OB-XBa">
             <objects>
@@ -40,7 +60,7 @@
                     <connections>
                         <segue destination="ZGB-2j-17G" kind="relationship" relationship="viewControllers" id="3fN-Wp-c4P"/>
                         <segue destination="8ZG-xO-28X" kind="relationship" relationship="viewControllers" id="xg5-2V-Ewe"/>
-                        <segue destination="a4G-qT-7I9" kind="relationship" relationship="viewControllers" id="EhG-H1-P37"/>
+                        <segue destination="XEg-hW-4cW" kind="relationship" relationship="viewControllers" id="EhG-H1-P37"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FkE-Rc-z72" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -57,13 +77,22 @@
             </objects>
             <point key="canvasLocation" x="432" y="-722"/>
         </scene>
-        <!--FindFriends-->
-        <scene sceneID="ncE-nJ-R32">
+        <!--People-->
+        <scene sceneID="0PF-0y-09d">
             <objects>
-                <viewControllerPlaceholder storyboardName="FindFriends" id="a4G-qT-7I9" userLabel="FindFriends" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="QXa-Hd-Mm2"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PwN-Dg-kcR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XEg-hW-4cW" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="People" id="8eY-iH-dpd"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="3NC-Vk-ShU">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="8ig-69-IOl" kind="relationship" relationship="rootViewController" id="UkL-yl-izC"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p6l-DX-nsx" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="432.80000000000001" y="1036.7316341829087"/>
         </scene>

@@ -103,6 +103,7 @@
                                                         <constraint firstAttribute="width" constant="54" id="JxP-6m-yxI"/>
                                                     </constraints>
                                                     <state key="normal" backgroundImage="btn_heart_black_outline.png"/>
+                                                    <state key="selected" image="btn_heart_red_solid"/>
                                                     <connections>
                                                         <action selector="likeActionTapped:" destination="JiV-RY-0lj" eventType="touchUpInside" id="gHG-an-dhS"/>
                                                     </connections>
@@ -196,6 +197,7 @@
     </scenes>
     <resources>
         <image name="btn_heart_black_outline.png" width="200" height="200"/>
+        <image name="btn_heart_red_solid" width="16" height="16"/>
         <image name="tab_home_back" width="16" height="16"/>
     </resources>
 </document>
