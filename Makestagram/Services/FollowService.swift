@@ -57,16 +57,16 @@ struct FollowService {
                 let postKeys = posts.flatMap {$0.key}
                 var unfollowData = [String : Any] ()
                 
-                postKeys.forEach { unfollowData["timeline/\(currentUID)/\($0)"] = NSNull() }
+                postKeys.forEach {
+                    unfollowData["timeline/\(currentUID)/\($0)"] = NSNull() }
                 
-                
-            }
+                }
             
             ref.updateChildValues(followData, withCompletionBlock: { (error, ref) in
-                if let error = error {
-                    assertionFailure(error.localizedDescription)
-                }
-                success(error == nil)
+                    if let error = error {
+                        assertionFailure(error.localizedDescription)
+                    }
+                    success(error == nil)
             })
 
         }
