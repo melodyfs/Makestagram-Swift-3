@@ -23,7 +23,10 @@ struct UserService {
     }
     
     static func create(_ firUser: FIRUser, username: String, completion: @escaping (User?) -> Void) {
-        let userAttrs = ["username": username]
+        let userAttrs: [String: Any] = ["username": username,
+                        "follower_count": 0,
+                        "following_count" : 0,
+                        "post_count" : 0]
         
         let ref = Database.database().reference().child("users").child(firUser.uid)
         ref.setValue(userAttrs) { (error, ref) in
@@ -119,11 +122,13 @@ struct UserService {
     
     //Join: reading user's timeline
     
-    static func timeline(completion: @escaping ([Post]) -> Void) {
+    static func timeline(pageSize: UInt, lastPostKey: String? = nil, completion: @escaping ([Post]) -> Void) {
         let currentUser = User.current
-        let timelineRef = Database.database().reference().child("timeline").child(currentUser.uid)
         
-        timelineRef.observeSingleEvent(of: .value, with: { (snapshot) in
+        let ref = Database.database().reference().child("timeline").child(currentUser.uid)
+        var query = ref.queryOrderedByKey().queryLimited(toLast: pageSize)
+        
+        query.observeSingleEvent(of: .value, with: { (snapshot) in
         guard let snapshot = snapshot.children.allObjects as? [DataSnapshot]
             else { return completion([]) }
         
@@ -152,6 +157,21 @@ struct UserService {
         })
         }
     )}
+    
+    static func observeProfile(for user: User, completion: @escaping (DatabaseReference, User?, [Post]) -> Void) -> DatabaseHandle {
+        let userRef = Database.database().reference().child("users").child(user.uid)
+
+        //continuously observe the profile change
+        return userRef.observe(.value, with: { snapshot in
+            guard let user = User(snapshot: snapshot) else {
+                return completion(userRef, nil, [])
+            }
+
+            posts(for: user, completion: { posts in
+                completion(userRef, user, posts)
+            })
+        })
+    }
 
     
 }

@@ -12,6 +12,8 @@ import Kingfisher
 
 class HomeViewController: UIViewController {
     
+    let paginationHelper = MGPaginationHelper<Post>(serviceMethod: UserService.timeline)
+    
     @IBOutlet weak var tableView: UITableView!
     
     let refreshControl = UIRefreshControl()
@@ -29,6 +31,10 @@ class HomeViewController: UIViewController {
         configureTableView()
         
        reloadTimeline()
+        
+
+        
+        
     }
     
     // MARK: - Properties
@@ -48,8 +54,7 @@ class HomeViewController: UIViewController {
     
     func reloadTimeline() {
         
-        UserService.timeline { (posts) in
-
+        self.paginationHelper.reloadData(completion: { [unowned self] (posts) in
             self.posts = posts
             
             if self.refreshControl.isRefreshing {
@@ -58,17 +63,29 @@ class HomeViewController: UIViewController {
             
             self.tableView.reloadData()
             
-        }
-        
+        })
+
+
     }
-    
-   
     
 }
 
 //retrieve data from our Post array.
 
 extension HomeViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.section >= posts.count - 1 {
+            paginationHelper.paginate(completion: { [unowned self] (posts) in
+                self.posts.append(contentsOf: posts)
+                
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            })
+        }
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
     }
